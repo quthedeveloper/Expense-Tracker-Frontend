@@ -269,7 +269,9 @@
 }
 
 .otp-box {
-  width: 3.1rem;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 3.1rem;
   height: 3.4rem;
   text-align: center;
   font-family: 'Poppins', sans-serif;
@@ -291,6 +293,7 @@
 
 .auth-meta-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
@@ -339,6 +342,12 @@
   .auth-heading {
     font-size: 1.6rem;
   }
+
+  /* Stop iOS Safari from auto-zooming when an input is focused */
+  .auth-input,
+  .otp-box {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 420px) {
@@ -352,11 +361,6 @@
 
   .auth-form-row {
     grid-template-columns: 1fr;
-  }
-
-  .otp-box {
-    width: 2.6rem;
-    height: 3rem;
   }
 
   .auth-topbar {
