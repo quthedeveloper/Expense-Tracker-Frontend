@@ -5,6 +5,7 @@ import TokenContext from '../accessContext/tokenContext';
 import { MessageDiv } from '../UI extras/expenseMessage-div';
 import { useNavigate } from 'react-router-dom';
 import { ExpenseTableData } from './ExpenseTableData';
+import AppShell from './AppShell';
 
 //expense page delete functionality
 export function ExpensePage(){
@@ -253,94 +254,93 @@ setTotal(t => {
 }
 
     return (
-    <>
-    <MessageDiv Message={message} show = {show}/>
-    <main className="expense-page">
-        <div className="page-header">
-            <h1 className="page-title">Expense Page</h1>
-            <p className="page-subtitle">Enter all your expenses here</p>
-        </div>
-
-        
-        <div className="add-expense-card">
-            <form>
-                <div className="form-grid">
-                    <div className="form-group">
-                        <label className="form-label">Description</label>
-                        <input type="text" className="form-input" name = "description" placeholder="Enter expense description" onChange={setsource} required/>
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Amount</label>
-                        <input type="number" className="form-input" placeholder="0.00" step="0.01" name='amount' onChange={setsource} required/>
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Category</label>
-                        <select className="form-select" name='category' onChange={setsource} required>
-                            <option value="select your option">select your option</option>
-                            <option value="Food & Dinning">Food & Dining</option>
-                            <option value="Transportation">Transportation</option>
-                            <option value="Utilities">Utilities</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Healthcare">Healthcare</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Date</label>
-                        <input type="date" className="form-input" name='date' onChange={setsource} required/>
-                    </div>
-                </div>
-                <div className="form-actions">
-                    <button type="submit" className="btn btn-primary" onClick={addExpense}>Add Expense</button>
-                    <button type="reset" className="btn btn-secondary" onClick={clear}>Clear</button>
-                </div>
-            </form>
-        </div>
-
-        
-        <div className="expenses-card">
-            <div className="table-header">
-                <span className="table-info"> {` Showing 1 to ${page.length} of ${total} entries`}</span>
+        <AppShell>
+            <MessageDiv Message={message} show={show} />
+            <div className="page-head">
+                <h1>Expenses</h1>
+                <p>Track and manage your spending</p>
             </div>
-            <table className="expenses-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  {page.length > 0 ? <ExpenseTableData
-                  page = {page}
-                  delEntry ={delEntry} 
-                  accesstoken = {accesstoken} 
-                   setAccess = {setAccess} 
-                   setmessage = {userMessage}
-                  />
-                  : 
-                  "No entries available"}
-                </tbody>
-            </table>
 
-            
-            <div className="pagination">
-                <button className="pagination-btn" disabled = {isDisabled} onClick={previousPage}>Previous</button>
-                 {pageNum.map((num,_)=>{
-                            return(
-                                <button className="pagination-btn page-number" key={num} onClick={()=>{changePage(num)}}
-                                style={{backgroundColor: selectedNum === num ?" #ef4444" : "#fff", color:selectedNum === num ? "#fff" : "#000"}}>{num}</button>
-                            ) 
-                       })    
-                    }
-                <button className="pagination-btn" onClick={nextPage}>Next</button>
+            <div className="card">
+                <div className="card-head"><h3>Add Expense</h3></div>
+                <form>
+                    <div className="form-grid">
+                        <div className="field">
+                            <label>Description</label>
+                            <input type="text" name="description" placeholder="Enter expense description" onChange={setsource} required />
+                        </div>
+                        <div className="field">
+                            <label>Amount</label>
+                            <input type="number" placeholder="0.00" step="0.01" name='amount' onChange={setsource} required />
+                        </div>
+                        <div className="field">
+                            <label>Category</label>
+                            <select name='category' onChange={setsource} required>
+                                <option value="select your option">select your option</option>
+                                <option value="Food & Dinning">Food & Dining</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div className="field">
+                            <label>Date</label>
+                            <input type="date" name='date' onChange={setsource} required />
+                        </div>
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="btn-green" onClick={addExpense}>Add Expense</button>
+                        <button type="reset" className="btn-outline" onClick={clear}>Clear</button>
+                    </div>
+                </form>
             </div>
-        </div>
-    </main>
 
-    </>)
+            <div className="card">
+                <div className="card-head">
+                    <h3>Expense History</h3>
+                    <span className="muted">{`Showing 1 to ${page.length} of ${total} entries`}</span>
+                </div>
+                <div className="tbl-wrap">
+                    <table className="tbl">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {page.length > 0 ? <ExpenseTableData
+                                page={page}
+                                delEntry={delEntry}
+                                accesstoken={accesstoken}
+                                setAccess={setAccess}
+                                setmessage={userMessage}
+                            />
+                                :
+                                <tr><td colSpan={5}><div className="empty-state">No entries available</div></td></tr>}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="pagination">
+                    <button className="page-btn" disabled={isDisabled} onClick={previousPage}>Previous</button>
+                    {pageNum.map((num, _) => (
+                        <button
+                            className={`page-btn${selectedNum === num ? ' active' : ''}`}
+                            key={num}
+                            onClick={() => { changePage(num) }}
+                        >{num}</button>
+                    ))}
+                    <button className="page-btn" onClick={nextPage}>Next</button>
+                </div>
+            </div>
+        </AppShell>
+    )
 }
 

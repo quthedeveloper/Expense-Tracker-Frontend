@@ -5,6 +5,7 @@ import axios from 'axios';
 import TokenContext from '../accessContext/tokenContext';
 import { useNavigate } from 'react-router-dom';
 import { TableData } from './TableData';
+import AppShell from './AppShell';
 
 
 
@@ -271,113 +272,100 @@ setTotal(t => {
 })
 }
  
-return(<>
- <Message Message={message} show = {show}/>
- <main class="income-page">
-        <div class="page-header">
-            <h1>Income Page</h1>
-            <p>Track and manage your income sources</p>
-        </div>
-
-        
-        <div class="add-income-card">
-            <h2>Add New Income</h2>
-            <form>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="income-source">Income Source</label>
-                        <select id="income-source" name='source' onChange={setsource}>
-                            <option value="">Select source</option>
-                            <option value="salary">Salary</option>
-                            <option value="freelance">Freelance</option>
-                            <option value="investment">Investment</option>
-                            <option value="business">Business</option>
-                            <option value="rental">Rental</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">Amount</label>
-                        <input type="number" id="amount" placeholder="0.00" step="0.01" name='amount' onChange={setsource} required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="date">Date</label>
-                        <input type="date" id="date" name='date' onChange={setsource} required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="payment-method">Payment Method</label>
-                        <select id="payment-method" name='paymentMethod' onChange={setsource} required>
-                            <option value="">Select method</option>
-                            <option value="bank-transfer">Bank Transfer</option>
-                            <option value="cash">Cash</option>
-                            <option value="check">Check</option>
-                            <option value="paypal">PayPal</option>
-                            <option value="crypto">Cryptocurrency</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" placeholder="Add notes about this income..." name='description' onChange={setsource} required></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onClick={clear}>Cancel</button>
-                    <button type="submit" class="btn btn-primary" onClick={addIncome} >Add Income</button>
-                </div>
-            </form>
-        </div>
-
-        
-       
-    
-       
-        <div class="income-table-card">
-            <h2>Income History</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Source</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                   {page.length > 0? <TableData page= {page} 
-                   delEntry ={delEntry} 
-                   accesstoken = {accesstoken} 
-                   setAccess = {setAccess} 
-                   setmessage = {userMessage} 
-                   /> 
-                   : 
-                   "No entries avalaible"}                 
-                     </tbody>
-                </table>
+    return (
+        <AppShell>
+            <Message Message={message} show={show} />
+            <div className="page-head">
+                <h1>Income</h1>
+                <p>Track and manage your income sources</p>
             </div>
 
-           
-            <div class="pagination">
-                <div class="pagination-info">
-                   {` Showing 1 to ${page.length} of ${total} entries`}
+            <div className="card">
+                <div className="card-head"><h3>Add Income</h3></div>
+                <form>
+                    <div className="form-grid">
+                        <div className="field">
+                            <label htmlFor="income-source">Income Source</label>
+                            <select id="income-source" name='source' onChange={setsource}>
+                                <option value="">Select source</option>
+                                <option value="salary">Salary</option>
+                                <option value="freelance">Freelance</option>
+                                <option value="investment">Investment</option>
+                                <option value="business">Business</option>
+                                <option value="rental">Rental</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div className="field">
+                            <label htmlFor="amount">Amount</label>
+                            <input type="number" id="amount" placeholder="0.00" step="0.01" name='amount' onChange={setsource} required />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="date">Date</label>
+                            <input type="date" id="date" name='date' onChange={setsource} required />
+                        </div>
+                        <div className="field">
+                            <label htmlFor="payment-method">Payment Method</label>
+                            <select id="payment-method" name='paymentMethod' onChange={setsource} required>
+                                <option value="">Select method</option>
+                                <option value="bank-transfer">Bank Transfer</option>
+                                <option value="cash">Cash</option>
+                                <option value="check">Check</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="crypto">Cryptocurrency</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="field" style={{ marginTop: '14px' }}>
+                        <label htmlFor="description">Description</label>
+                        <textarea id="description" placeholder="Add notes about this income..." name='description' onChange={setsource} required></textarea>
+                    </div>
+                    <div className="form-actions">
+                        <button type="button" className="btn-outline" onClick={clear}>Cancel</button>
+                        <button type="submit" className="btn-green" onClick={addIncome}>Add Income</button>
+                    </div>
+                </form>
+            </div>
+
+            <div className="card">
+                <div className="card-head"><h3>Income History</h3></div>
+                <div className="tbl-wrap">
+                    <table className="tbl">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Source</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {page.length > 0 ? <TableData page={page}
+                                delEntry={delEntry}
+                                accesstoken={accesstoken}
+                                setAccess={setAccess}
+                                setmessage={userMessage}
+                            />
+                                :
+                                <tr><td colSpan={5}><div className="empty-state">No entries available</div></td></tr>}
+                        </tbody>
+                    </table>
                 </div>
-                <div class="pagination-controls">
-                    <button class="pagination-btn" disabled = {isDisabled} onClick={previousPage}>Previous</button>
-                    
-                        {pageNum.map((num,_)=>{
-                            return(
-                                <button className="page-number" key={num} onClick={()=>{changePage(num)}}
-                                style={{backgroundColor: selectedNum === num ? "#0c8c2cff" : "#fff", color:selectedNum === num ? "#fff" : "#000"}}>{num}</button>
-                            ) 
-                       })    
-                    }
-                    
-                    <button class="pagination-btn" onClick={nextPage}>Next</button>
+
+                <div className="pagination">
+                    <span className="muted">{`Showing 1 to ${page.length} of ${total} entries`}</span>
+                    <button className="page-btn" disabled={isDisabled} onClick={previousPage}>Previous</button>
+                    {pageNum.map((num, _) => (
+                        <button
+                            className={`page-btn${selectedNum === num ? ' active' : ''}`}
+                            key={num}
+                            onClick={() => { changePage(num) }}
+                        >{num}</button>
+                    ))}
+                    <button className="page-btn" onClick={nextPage}>Next</button>
                 </div>
             </div>
-        </div>
-    </main>
-   </>
-)
+        </AppShell>
+    )
 }
