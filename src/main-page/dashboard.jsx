@@ -21,7 +21,7 @@ ChartJS.register(
 function Dashboard() {
     const navigate = useNavigate();
     const { accesstoken, setAccess } = useContext(TokenContext);
-    const [skeletonEnabler, setEnabler] = useState(false);
+    const [skeletonEnabler, setEnabler] = useState(true);
     const [email, setEmail] = useState('');
     const [info, setinfo] = useState({});
     const [balance, setbalance] = useState(0);
@@ -43,8 +43,9 @@ function Dashboard() {
             label: 'amount',
             data: [balance || 0, expense || 0, income || 0],
             backgroundColor: ["#16a34a", "#ef4444", "#f59e0b"],
-            borderColor: ["#16a34a", "#ef4444", "#f59e0b"],
-            borderWidth: 2,
+            borderColor: "#ffffff",
+            borderWidth: 3,
+            hoverOffset: 8,
         }]
     };
     const options = {
@@ -59,7 +60,29 @@ function Dashboard() {
                 }
             }
         },
-        cutout: '68%',
+        cutout: '72%',
+    };
+
+    // draws the total in the middle of the doughnut
+    const centerText = {
+        id: 'centerText',
+        afterDraw(chart) {
+            const meta = chart.getDatasetMeta(0);
+            if (!meta.data[0]) return;
+            const { x, y } = meta.data[0];
+            const total = (Number(income) || 0) + (Number(expense) || 0);
+            const { ctx } = chart;
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#667085';
+            ctx.font = "500 12px Roboto, sans-serif";
+            ctx.fillText('Total flow', x, y - 13);
+            ctx.fillStyle = '#101828';
+            ctx.font = "700 19px Poppins, sans-serif";
+            ctx.fillText(`$${total.toFixed(2)}`, x, y + 13);
+            ctx.restore();
+        }
     };
 
     const catLabels = ['Healthcare', 'Food', 'Transport', 'Utilities', 'Entertainment', 'Others', 'Shopping'];
@@ -172,6 +195,7 @@ function Dashboard() {
     }, [accesstoken]);
 
     useEffect(() => {
+        if (!info || Object.keys(info).length === 0) return;
         setbalance(info?.Balance);
         setIncome(info?.TotalIncome);
         setExpense(info?.TotalExpense);
@@ -184,6 +208,7 @@ function Dashboard() {
         setutils(info?.Utilities);
         setshopping(info?.Shopping);
         settransport(info?.Transportation);
+        setEnabler(false);
     }, [info])
 
     // ---- derived display data (read-only) ----
@@ -247,7 +272,7 @@ function Dashboard() {
                         <h3>Income vs Expenses</h3>
                     </div>
                     <div className="chart-box chart-box-sm">
-                        {skeletonEnabler ? <Skeleton height={170} /> : <Doughnut data={data} options={options} />}
+                        {skeletonEnabler ? <Skeleton height={170} /> : <Doughnut data={data} options={options} plugins={[centerText]} />}
                     </div>
                     <div className="dash-cta-row">
                         <Link to="/incomepage" className="btn-green btn-sm">Add Income</Link>
