@@ -1,11 +1,12 @@
+/* Thin white ring spinner — used inside the green auth buttons */
 .spinner {
   width: 20px;
   height: 20px;
-  border: 4px solid #ddd;
-  border-top-color: #3498db;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto; 
+  animation: spin 0.9s linear infinite;
+  margin: 0 auto;
 }
 
 @keyframes spin {
@@ -14,97 +15,9 @@
   }
 }
 
-
-.submit-button.loading {
-  position: relative;
-  color: transparent; 
-}
-
-.submit-button.loading::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-top: 2px solid #ffffff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-
-@media screen and (max-width: 1024px) {
-  .spinner {
-    width: 18px;
-    height: 18px;
-    border-width: 3px;
-  }
-  
-  .submit-button.loading::after {
-    width: 18px;
-    height: 18px;
-    border-width: 2px;
-  }
-}
-
-
 @media screen and (max-width: 768px) {
   .spinner {
-    width: 16px;
-    height: 16px;
-    border-width: 3px;
-  }
-  
-  .submit-button.loading::after {
-    width: 16px;
-    height: 16px;
-    border-width: 2px;
-  }
-}
-
-
-@media screen and (max-width: 640px) {
-  .spinner {
-    width: 14px;
-    height: 14px;
-    border-width: 2px;
-  }
-  
-  .submit-button.loading::after {
-    width: 14px;
-    height: 14px;
-    border-width: 2px;
-  }
-}
-
-
-@media screen and (max-width: 480px) {
-  .spinner {
-    width: 12px;
-    height: 12px;
-    border-width: 2px;
-  }
-  
-  .submit-button.loading::after {
-    width: 12px;
-    height: 12px;
-    border-width: 2px;
-  }
-}
-
-
-@media screen and (max-width: 360px) {
-  .spinner {
-    width: 10px;
-    height: 10px;
-    border-width: 2px;
-  }
-  
-  .submit-button.loading::after {
-    width: 10px;
-    height: 10px;
-    border-width: 1.5px;
+    width: 17px;
+    height: 17px;
   }
 }

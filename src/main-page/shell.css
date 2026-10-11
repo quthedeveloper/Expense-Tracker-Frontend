@@ -558,6 +558,45 @@
   font-size: 0.92rem;
 }
 
+/* ---------- thin ring loaders ---------- */
+.thin-loader {
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--sh-green-soft);
+  border-top-color: var(--sh-green);
+  border-radius: 50%;
+  animation: sh-spin 0.9s linear infinite;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.thin-loader-sm {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  margin: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.thin-loader-light {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+}
+
+.loader-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 170px;
+}
+
+@keyframes sh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 1024px) {
   .topbar {

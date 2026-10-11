@@ -3,8 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './dashboard.css';
 import axios from "axios";
-import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
 import AppShell from "./AppShell";
@@ -21,7 +19,7 @@ ChartJS.register(
 function Dashboard() {
     const navigate = useNavigate();
     const { accesstoken, setAccess } = useContext(TokenContext);
-    const [skeletonEnabler, setEnabler] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState('');
     const [info, setinfo] = useState({});
     const [balance, setbalance] = useState(0);
@@ -115,10 +113,10 @@ function Dashboard() {
 
         // request interceptor
         API.interceptors.request.use(function (config) {
-            setEnabler(true);
+            setLoading(true);
             return config
         }, (err) => {
-            setEnabler(false);
+            setLoading(false);
             return Promise.reject(err);
         }
         )
@@ -132,7 +130,7 @@ function Dashboard() {
             }
             return response;
         }), (error) => {
-            setEnabler(false);
+            setLoading(false);
             if (error.response.status === 400) {
                 alert('you do not exist')// message div
             }
@@ -190,7 +188,7 @@ function Dashboard() {
     useEffect(() => {
         getInfo();
         setTimeout(() => {
-            setEnabler(false);
+            setLoading(false);
         }, 2000)
     }, [accesstoken]);
 
@@ -208,7 +206,7 @@ function Dashboard() {
         setutils(info?.Utilities);
         setshopping(info?.Shopping);
         settransport(info?.Transportation);
-        setEnabler(false);
+        setLoading(false);
     }, [info])
 
     // ---- derived display data (read-only) ----
@@ -230,7 +228,9 @@ function Dashboard() {
         .sort((a, b) => b.value - a.value)
         .slice(0, 5);
 
-    const stat = (v) => skeletonEnabler ? <Skeleton width={110} /> : `$${Number(v || 0).toFixed(2)}`;
+    const stat = (v) => loading
+        ? <span className="thin-loader thin-loader-sm thin-loader-light" aria-label="Loading" />
+        : `$${Number(v || 0).toFixed(2)}`;
 
     return (
         <AppShell>
@@ -263,7 +263,9 @@ function Dashboard() {
                         <h3>Spending by Category</h3>
                     </div>
                     <div className="chart-box">
-                        {skeletonEnabler ? <Skeleton height={190} /> : <Bar data={barData} options={barOptions} />}
+                        {loading
+                            ? <div className="loader-wrap"><span className="thin-loader" aria-label="Loading" /></div>
+                            : <Bar data={barData} options={barOptions} />}
                     </div>
                 </div>
 
@@ -272,7 +274,9 @@ function Dashboard() {
                         <h3>Income vs Expenses</h3>
                     </div>
                     <div className="chart-box chart-box-sm">
-                        {skeletonEnabler ? <Skeleton height={170} /> : <Doughnut data={data} options={options} plugins={[centerText]} />}
+                        {loading
+                            ? <div className="loader-wrap"><span className="thin-loader" aria-label="Loading" /></div>
+                            : <Doughnut data={data} options={options} plugins={[centerText]} />}
                     </div>
                     <div className="dash-cta-row">
                         <Link to="/incomepage" className="btn-green btn-sm">Add Income</Link>
